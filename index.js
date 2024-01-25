@@ -1,5 +1,5 @@
 const { createInterface } = require("readline");
-const data = require("./data.js");
+const { validLetters, words, ASCII } = require("./data.js");
 
 class Hangman {
   constructor() {
@@ -11,7 +11,7 @@ class Hangman {
   }
 
   getStateOfHangman() {
-    return data.ASCII[this.state];
+    return ASCII[this.state];
   }
 
   fail() {
@@ -26,12 +26,14 @@ class Hangman {
 class Word {
   constructor() {
     this.openPositions = new Set();
+    this.usedLetter = new Set();
   }
 
   initial() {
     this.openPositions = new Set();
+    this.usedLetter = new Set();
     const randomNumber = this._getRandomNumber();
-    this.word = data.words[randomNumber];
+    this.word = words[randomNumber];
     this._getRandomPositions();
   }
 
@@ -64,8 +66,16 @@ class Word {
       .join("");
   }
 
+  getUsedLetters() {
+    return this.usedLetter;
+  }
+
+  addUsedLetter(letter) {
+    this.usedLetter.add(letter);
+  }
+
   _getRandomNumber() {
-    const randomNumber = Math.floor(Math.random() * data.words.length);
+    const randomNumber = Math.floor(Math.random() * words.length);
     return randomNumber;
   }
 
@@ -74,6 +84,7 @@ class Word {
       const randomNumber = Math.floor(Math.random() * this.word.length);
       if (!this.openPositions.has(randomNumber)) {
         this.openPositions.add(randomNumber);
+        this.usedLetter.add(this.word[randomNumber]);
       }
     }
   }
@@ -91,9 +102,16 @@ class Game {
 
   guessLetter(letter) {
     const isHasLetter = this.word.hasLetter(letter);
-    if (!isHasLetter) {
+
+    if (
+      !isHasLetter &&
+      validLetters.has(letter) &&
+      !this.word.getUsedLetters().has(letter)
+    ) {
       this.hangman.fail();
     }
+
+    this.word.addUsedLetter(letter);
     this.showStateOfTheGame();
   }
 
