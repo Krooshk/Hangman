@@ -31,7 +31,7 @@ class Word {
 
   initial() {
     this.openPositions = new Set();
-    this.usedLetter = new Set();
+    this.mistakes = new Set();
     const randomNumber = this._getRandomNumber();
     this.word = words[randomNumber];
     this._getRandomPositions();
@@ -66,12 +66,12 @@ class Word {
       .join("");
   }
 
-  getUsedLetters() {
-    return this.usedLetter;
+  getMistakes() {
+    return this.mistakes;
   }
 
-  addUsedLetter(letter) {
-    this.usedLetter.add(letter);
+  addMistakeLetter(letter) {
+    this.mistakes.add(letter);
   }
 
   _getRandomNumber() {
@@ -106,12 +106,12 @@ class Game {
     if (
       !isHasLetter &&
       validLetters.has(letter) &&
-      !this.word.getUsedLetters().has(letter)
+      !this.word.getMistakes().has(letter)
     ) {
       this.hangman.fail();
+      this.word.addMistakeLetter(letter);
     }
 
-    this.word.addUsedLetter(letter);
     this.showStateOfTheGame();
   }
 
@@ -129,7 +129,9 @@ class Game {
   showStateOfTheGame() {
     console.log(`Слово: ${this.word.getHiddenWord()}`);
     console.log(`${this.hangman.getStateOfHangman()}`);
-    console.log(`Ошибок: ${this.hangman.getCountFail()} / 6`);
+    console.log(
+      `Ошибки(${this.hangman.getCountFail()}): ${[...this.word.getMistakes()]}`
+    );
     console.log("_______________________");
     this.checkState();
   }
