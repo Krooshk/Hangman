@@ -19,4 +19,4 @@ https://zhukovsd.github.io/java-backend-learning-course/Projects/Hangman/
 
 Для старта самой игры нужнно ввести: 'старт' + enter
 
-Для выхода нужнно ввести: любой символ + enter
+Для выхода нужно ввести: любой символ + enter
