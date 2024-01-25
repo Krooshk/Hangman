@@ -16,5 +16,7 @@ https://zhukovsd.github.io/java-backend-learning-course/Projects/Hangman/
 Запуск CLI приложения
 --------
 Для запуска игры используйте node + index(название файла в данном случае).
+
 Для старта самой игры нужнно ввести: 'старт' + enter
+
 Для выхода нужнно ввести: любой символ + enter
